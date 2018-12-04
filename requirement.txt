@@ -12,4 +12,5 @@ imgaug
 IPython[all]
 nibabel
 opencv-python
+opencv-contrib-python
 jupyter

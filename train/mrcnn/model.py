@@ -1069,7 +1069,7 @@ def rpn_bbox_loss_graph(config, target_bbox, rpn_match, rpn_bbox):
                                    config.IMAGES_PER_GPU)
 
     loss = smooth_l1_loss(target_bbox, rpn_bbox)
-    
+
     loss = K.switch(tf.size(loss) > 0, K.mean(loss), tf.constant(0.0))
     return loss
 
@@ -2801,7 +2801,9 @@ def mold_image(images, config):
     the mean pixel and converts it to float. Expects image
     colors in RGB order.
     """
-    return images.astype(np.float32) - config.MEAN_PIXEL
+
+    # Here we did not use RGB 3 channels so we remove config.MEAN_PIXEL
+    return images.astype(np.float32) # - config.MEAN_PIXEL
 
 
 def unmold_image(normalized_images, config):
