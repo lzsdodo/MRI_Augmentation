@@ -12,7 +12,8 @@ reg_IR - 纵切片 灰度值(2047-1260)， 需要除以10才能正常显示 240 
 IR - 纵切片 240 * 240 * 48 (1200-2400)
 FLAIR - 纵切片 240*240*48 灰度值(0-800) 
 '''
-sourcepath = "/Volumes/PowerExtension/training/4"
+
+sourcepath = "./../dataset/orig/"
 subdirs = ["1", "4", "5", "7", "14", "070", "148"]
 subfolder = ["orig", "pre"]
 filenames = ["FLAIR.nii.gz","reg_IR.nii.gz" ,"IR.nii.gz"]

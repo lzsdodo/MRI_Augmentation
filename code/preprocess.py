@@ -7,10 +7,9 @@ import nibabel as nib
 
 from NIIReader.Augmentation import *
 
-data_path = './../dataset/Processed'
-train_path = './../dataset/Processed/train'
-val_path = './../dataset/Processed/val'
-
+data_path = './../dataset/processed'
+train_path = './../dataset/processed/train'
+val_path = './../dataset/processed/val'
 
 def dataset_preprocess():
     ## Generate images

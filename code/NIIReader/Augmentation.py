@@ -5,8 +5,8 @@ import nibabel as nib
 import numpy as np
 import os
 
-sourcepath = '/Users/dodo/Documents/projects/maskrcnn/dataset/Origin'
-outputpath = "/Users/dodo/Documents/projects/maskrcnn/dataset/Processed"
+sourcepath = './../dataset/orig'
+outputpath = './../dataset/processed'
 subdirs = ["1", "4", "5", "7", "14", "070", "148"]
 subfolder = ["orig"]
 filenames = ["FLAIR.nii.gz","reg_IR.nii.gz" ,"IR.nii.gz"]
