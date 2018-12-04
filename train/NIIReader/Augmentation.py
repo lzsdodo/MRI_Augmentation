@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 sourcepath = '/Users/dodo/Documents/projects/maskrcnn/dataset/Origin'
-outputpath = "/Users/dodo/Documents/projects/maskrcnn/output"
+outputpath = "/Users/dodo/Documents/projects/maskrcnn/dataset/Processed"
 subdirs = ["1", "4", "5", "7", "14", "070", "148"]
 subfolder = ["orig"]
 filenames = ["FLAIR.nii.gz","reg_IR.nii.gz" ,"IR.nii.gz"]
@@ -69,6 +69,7 @@ def dataAugmentation(image_paths, label_paths):
         for seq_path in image_paths[i]:
             seq = nib.load(seq_path)
             seq_array_data = seq.get_fdata()
+            # TODO: Resize image data from 240*240*48 to 256*256*48
             slice = [seq_array_data[:, :, s] for s in range(48)]
             a = np.array(slice)
             bundle = np.ndarray(shape=a.shape, buffer=a)
@@ -77,6 +78,7 @@ def dataAugmentation(image_paths, label_paths):
 
         seg = nib.load(label_paths[i])
         seg_array_data = seg.get_fdata()
+        # TODO: Resize seg data from 240*240*48 to 256*256*48
         slice = [seg_array_data[:, :, s] for s in range(48)]
         a = np.array(slice)
         bundle = np.ndarray(shape=a.shape, buffer=a)
@@ -199,6 +201,3 @@ def elastic_transformations_bundle(alpha, sigma, rng=np.random.RandomState(42),
             transformed_images_x.append(transformed_images)
         return transformed_images_x
     return _elastic_transform_2D
-
-image_paths, label_paths = getPaths()
-dataAugmentation(image_paths, label_paths)
