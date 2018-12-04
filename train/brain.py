@@ -103,7 +103,7 @@ class BrainsDataset(utils.Dataset):
         info = self.image_info[image_id]
         seg = np.load(info['path'])[1]
         for i in range(len(self.class_info)):
-            each_class = np.ones(seg.shape[0], seg.shape[1])
+            each_class = np.ones([seg.shape[0], seg.shape[1]])
             if np.sum(seg == each_class) != 0:
                 mask[:, :, i:i+1] = (seg == each_class)
                 class_ids.append(i)
