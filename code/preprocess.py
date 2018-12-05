@@ -1,11 +1,10 @@
 import numpy as np
 import os
 import sys
-# from PIL import Image
+import random
 import matplotlib.pyplot as plt
-import nibabel as nib
 
-from NIIReader.Augmentation import *
+from NIIReader_yue.Augmentation import *
 
 data_path = './../dataset/processed'
 train_path = './../dataset/processed/train'
@@ -13,17 +12,20 @@ val_path = './../dataset/processed/val'
 
 def dataset_preprocess():
     ## Generate images
-    image_paths, label_paths = getPaths()
-    dataAugmentation(image_paths, label_paths)
+#     image_paths, label_paths = getPaths()
+#     dataAugmentation(image_paths, label_paths)
     #if len(os.listdir(data_path)) != 2 and len(os.listdir(data_path)) != 6722:
     
     ## Separate Train and Val data
     all_data_names = os.listdir(data_path)
+    p = np.arange(len(all_data_names))
+    random.shuffle(p)
     print('Total data number is', len(all_data_names))
-    train_data_names = all_data_names[:int(len(all_data_names)*0.8)]
+    train_data_names = np.array(all_data_names)[p[:int(len(p)*0.8)]]
     print('Training data number is', len(train_data_names))
-    val_data_names = all_data_names[int(len(all_data_names)*0.8):]
+    val_data_names = np.array(all_data_names)[p[int(len(p)*0.8):]]
     print('Val data number is', len(val_data_names))
+
 
     if not os.path.isdir(train_path):
         os.mkdir(train_path)    

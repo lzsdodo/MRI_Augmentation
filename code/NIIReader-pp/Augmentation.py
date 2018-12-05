@@ -1,12 +1,17 @@
 from scipy.ndimage.interpolation import map_coordinates
 from scipy.ndimage.filters import gaussian_filter
 from PIL import Image
-import nibabel as nib
+# import nibabel as nib
+import SimpleITK as sitk
 import numpy as np
 import os
 
 sourcepath = './../dataset/orig'
-outputpath = './../dataset/processed'
+outputpath = "./../dataset/processed"
+
+# sourcepath = './data/Origin'
+# outputpath = './data/yuep_processed'
+
 subdirs = ["1", "4", "5", "7", "14", "070", "148"]
 subfolder = ["orig"]
 filenames = ["FLAIR.nii.gz","reg_IR.nii.gz" ,"IR.nii.gz"]
@@ -67,31 +72,38 @@ def dataAugmentation(image_paths, label_paths):
         shifts = [5]
 
         for seq_path in image_paths[i]:
-            seq = nib.load(seq_path)
-            seq_array_data = seq.get_fdata()
+            # seq = nib.load(seq_path)
+            # seq_array_data = seq.get_fdata()
+            seq = sitk.ReadImage(seq_path)
+            seq_array_data = sitk.GetArrayFromImage(seq)
+            seq_array_data = np.transpose(seq_array_data,(1, 2, 0))
             # TODO: Resize image data from 240*240*48 to 256*256*48
-            resize_seq_array_data = np.zeros((256, 256, 48))
+            resize_seq_array_data = np.zeros((256,256,48))
             for j in range(48):
                 resize_seq_array_data[:, :, j].fill(seq_array_data[0][0][j])
-                resize_seq_array_data[8:248, 8:248, j] = seq_array_data[:, :, j]
+                resize_seq_array_data[8:248,8:248, j] = seq_array_data[:, :, j]
             slice = [resize_seq_array_data[:, :, s] for s in range(48)]
-            #slice = [seq_array_data[:, :, s] for s in range(48)]
             a = np.array(slice)
-            bundle = np.ndarray(shape=a.shape, buffer=a)
-            images_x.append(bundle)
+            # bundle = np.ndarray(shape=a.shape, buffer=a)
+            images_x.append(a)
+            # images_x.append(bundle)
             orig_images_x.append(slice)
 
-        seg = nib.load(label_paths[i])
-        seg_array_data = seg.get_fdata()
+        # seg = nib.load(label_paths[i])
+        # seg_array_data = seg.get_fdata()
+        seg = sitk.ReadImage(label_paths[i])
+        seg_array_data = sitk.GetArrayFromImage(seg)
+        seg_array_data = np.transpose(seg_array_data, (1, 2, 0))
         # TODO: Resize seg data from 240*240*48 to 256*256*48
-        resize_seg_array_data = np.zeros((256, 256, 48))
+        resize_seg_array_data = np.zeros((256,256,48))
         for j in range(48):
             resize_seg_array_data[:, :, j].fill(seg_array_data[0][0][j])
-            resize_seg_array_data[8:248, 8:248, j] = seg_array_data[:, :, j]
+            resize_seg_array_data[8:248,8:248, j] = seg_array_data[:, :, j]
         slice = [resize_seg_array_data[:, :, s] for s in range(48)]
         a = np.array(slice)
-        bundle = np.ndarray(shape=a.shape, buffer=a)
-        images_x.append(bundle)
+        # bundle = np.ndarray(shape=a.shape, buffer=a)
+        images_x.append(a)
+        # images_x.append(bundle)
         orig_images_x.append(slice)
 
         anx = []

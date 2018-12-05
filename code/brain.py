@@ -22,6 +22,8 @@ class BrainsConfig(Config):
     # Give the configuration a recognizable name
     NAME = "Brain"
 
+    BACKBONE = "resnet50"
+    
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
@@ -43,6 +45,7 @@ class BrainsConfig(Config):
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
     TRAIN_ROIS_PER_IMAGE = 32
+    MAX_GT_INSTANCES = 50
 
     # Use a small epoch since the data is simple
     STEPS_PER_EPOCH = 100
@@ -105,6 +108,7 @@ class BrainsDataset(utils.Dataset):
         """
         path = self.image_info[image_id]['path']
         image = np.load(path)[0]
+        image = np.expand_dims(image, axis = 2)
         return image
 
     def image_reference(self, image_id):
@@ -119,14 +123,15 @@ class BrainsDataset(utils.Dataset):
         """Generate instance masks for shapes of the given image ID.
         """
         info = self.image_info[image_id]
-        seg = np.load(info['path'])[1]
-        class_list = np.unique(seg).astype(int)
+        seg = np.load(info['path'])[1].astype(int)
+        class_list = np.unique(seg)
         class_ids = []
         mask = np.zeros([seg.shape[0], seg.shape[1], len(class_list)])
-        for i in class_list:
-            each_class = np.ones([seg.shape[0], seg.shape[1]])*i
+        for i in range(len(class_list)):
+            each_class = np.ones([seg.shape[0], seg.shape[1]])*class_list[i]
             mask[:, :, i] = (seg == each_class).astype(int)
-            class_ids.append(i)
+
+            class_ids.append(class_list[i])
 
         # TODO: What is this??? Never change for brain dataset. Could be bug in the future.
         # Handle occlusions
