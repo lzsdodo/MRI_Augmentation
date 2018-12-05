@@ -84,11 +84,11 @@ def dataAugmentation(image_paths, label_paths):
         seg = nib.load(label_paths[i])
         seg_array_data = seg.get_fdata()
         # TODO: Resize seg data from 240*240*48 to 256*256*48
-        resize_seq_array_data = np.zeros((256, 256, 48))
+        resize_seg_array_data = np.zeros((256, 256, 48))
         for j in range(48):
-            resize_seq_array_data[:, :, j].fill(seq_array_data[0][0][j])
-            resize_seq_array_data[8:248, 8:248, j] = seq_array_data[:, :, j]
-        slice = [resize_seq_array_data[:, :, s] for s in range(48)]
+            resize_seg_array_data[:, :, j].fill(seg_array_data[0][0][j])
+            resize_seg_array_data[8:248, 8:248, j] = seg_array_data[:, :, j]
+        slice = [resize_seg_array_data[:, :, s] for s in range(48)]
         a = np.array(slice)
         bundle = np.ndarray(shape=a.shape, buffer=a)
         images_x.append(bundle)
