@@ -1,1 +1,64 @@
-A Python script for reading and augmenting MRI sequence images
+# MaskRCNN
+
+> A Python script for reading and augmenting MRI sequence images
+
+## Cloud Setting
+
+- Setting ENV on AWS Instance
+
+    ```
+    sudo apt-get install python-opencv
+    source activate tensorflow_p36
+    pip install --upgrade pip
+    pip install nibabel opencv-python SimpleITK
+    ```
+
+- Connect to server's jupyter notebook
+
+    - Commands on Server 
+
+        ```
+        source activate tensorflow_p36
+        jupyter notebook --ip=* --port=8888 --no-browser
+        nohup jupyter notebook --ip=* --port=8888 --no-browser &> jupyter.log &
+        ```
+
+    - Start jupyter tunnel on client
+
+        ```
+        ssh -i /path/auth.pem -L 8157:localhost:8888 user@host
+        ```
+    
+## Path
+
+- Project Root Path
+
+    ```
+    /home/ubuntu/maskrcnn
+    ```
+
+- DataSet Path
+
+    ```
+    .../dataset/
+    .../dataset/orig/
+    .../dataset/processed/
+    .../dataset/processed/train/
+    .../dataset/processed/val/
+    .../dataset/output/
+    ```
+
+- Source Code Path
+
+    ```
+    .../code/
+    .../code/mrcnn/
+    .../code/NIIReader/
+    ```
+
+- Model Path
+
+    ```
+    .../model/coco/mask_rcnn_coco.h5
+    .../model/output/
+    ```
