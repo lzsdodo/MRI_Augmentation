@@ -10,7 +10,7 @@
     sudo apt-get install python-opencv
     source activate tensorflow_p36
     pip install --upgrade pip
-    pip install nibabel opencv-python SimpleITK
+    pip install nibabel opencv-python SimpleITK imgaug
     ```
 
 - Connect to server's jupyter notebook
